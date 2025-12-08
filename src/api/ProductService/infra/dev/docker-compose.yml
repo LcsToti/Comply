@@ -1,0 +1,52 @@
+name: product-ship
+services:
+  mongo:
+    image: mongo:7
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PASSWORD}
+    ports:
+      - "17020:27017"
+    volumes:
+      - mongo_product_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand({ping: 1})"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - product-network
+
+  product-service:
+    container_name: product-service
+    build:
+      context: ../../../
+      dockerfile: ProductService/src/ProductService.API/dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      MONGODB_CONNECTION_STRING: ${MONGODB_CONNECTION_STRING}
+      RABBITMQ_CONNECTION_STRING: ${RABBITMQ_CONNECTION_STRING}
+      JwtSettings__Secret: ${JwtSettings__Secret}
+      JwtSettings__Issuer: ${JwtSettings__Issuer}
+      JwtSettings__Audience: ${JwtSettings__Audience}
+      Gemini__Key: ${Gemini__Key}
+      AWS__BucketName: ${AWS__BucketName}
+      AWS__Region: ${AWS__Region}
+      AWS__AccessKey: ${AWS__AccessKey}
+      AWS__SecretKey: ${AWS__SecretKey}
+    ports:
+      - "9093:8080"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - product-network
+      - complyapi-network
+
+volumes:
+  mongo_product_data:
+
+networks:
+  product-network:
+  complyapi-network:
+    external: true

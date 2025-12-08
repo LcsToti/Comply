@@ -1,0 +1,47 @@
+name: notification-ship
+services:
+  mongo:
+    image: mongo:7
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PASSWORD}
+    ports:
+      - "17018:27017"
+    volumes:
+      - mongo_notification_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand({ping: 1})"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - notification-network
+
+  notification-service:
+    container_name: notification-service
+    build:
+      context: ../../../
+      dockerfile: NotificationService/src/NotificationService.Api/dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      MONGODB_CONNECTION_STRING: ${MONGODB_CONNECTION_STRING}
+      RABBITMQ_CONNECTION_STRING: ${RABBITMQ_CONNECTION_STRING}
+      JwtSettings__Secret: ${JwtSettings__Secret}
+      JwtSettings__Issuer: ${JwtSettings__Issuer}
+      JwtSettings__Audience: ${JwtSettings__Audience}
+    ports:
+      - "9091:8080"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - notification-network
+      - complyapi-network
+
+volumes:
+  mongo_notification_data:
+
+networks:
+  notification-network:
+  complyapi-network:
+    external: true

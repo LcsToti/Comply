@@ -1,0 +1,36 @@
+# Pastas padrão do .NET
+bin/
+obj/
+
+# Logs
+*.log
+logs/
+Log/
+
+# IDEs e configs
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Git
+.git/
+.gitignore
+
+# Docker compose (não precisa no contexto)
+docker-compose.yml
+docker-compose.*.yml
+
+# Sistema
+*.DS_Store
+Thumbs.db
+
+# Envs locais
+.env
+.env.*
+
+# Build/test
+coverage/
+test-results/

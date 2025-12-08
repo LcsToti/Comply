@@ -1,0 +1,17 @@
+name: apigateway
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: complyapi-gateway
+    restart: unless-stopped
+    volumes:
+      - ../../nginx/nginx.conf:/etc/nginx/nginx.conf:roagr
+    networks:
+      - complyapi-network
+      - npm-data_default # Para o Nginx Proxy Manager
+
+networks:
+  npm-data_default:
+    external: true
+  complyapi-network:
+    external: true

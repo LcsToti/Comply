@@ -1,0 +1,24 @@
+name: rabbitmq
+services:
+  rabbitmq:
+    image: heidiks/rabbitmq-delayed-message-exchange:latest
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RabbitMqSettings__User}
+      RABBITMQ_DEFAULT_PASS: ${RabbitMqSettings__Password}
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/
+    networks:
+      - complyapi-network
+      
+volumes:
+  rabbitmq_data:
+
+networks:
+  complyapi-network:
+    external: true

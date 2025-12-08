@@ -1,0 +1,14 @@
+services:
+  web:
+    image: nginx:alpine
+    container_name: complyweb
+    restart: unless-stopped
+    volumes:
+      - ../../dist:/usr/share/nginx/html
+      - ../nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - npm-data_default
+
+networks:
+  npm-data_default:
+    external: true

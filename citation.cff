@@ -1,0 +1,35 @@
+message: Please cite this software using these metadata.
+title: Comply
+authors:
+  - family-names: Santos Bezerra
+    given-names: Luan Fernando
+  - family-names: Ferreira Toti
+    given-names: Lucas Gabriel
+  - family-names: Zeíta Silva
+    given-names: Matheus
+  - family-names: Santos Bezerra
+    given-names: Pedro Fernando
+  - family-names: Silveira Leiva Machado
+    given-names: Pedro Henrique
+  - name-suffix: Professor
+    affiliation: PUC Minas
+    family-names: Alves de Oliveira
+    given-names: Pedro Felipe
+keywords:
+  - comercio-eletronico
+  - e-commerce
+  - leilao-online
+  - online-auction
+  - marketplace
+  - sistema-de-lances
+  - bidding-system
+  - compra-e-venda
+  - buy-and-sell
+  - C2C
+  - consumer-to-consumer
+  - clean-architecture
+repository-code: 
+version: 1.0.0
+
+date-released: 2025-12-07
+

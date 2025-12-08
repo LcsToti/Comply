@@ -1,0 +1,40 @@
+name: user-ship
+services:
+  mongo:
+    image: mongo:7
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PASSWORD}
+    volumes:
+      - mongo_user_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand({ping: 1})"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - user-network
+
+  user-service:
+    image: lcstotidev/user-service:${USER_SERVICE_TAG}
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      MONGODB_CONNECTION_STRING: ${MONGODB_CONNECTION_STRING}
+      RABBITMQ_CONNECTION_STRING: ${RABBITMQ_CONNECTION_STRING}
+      JwtSettings__Secret: ${JwtSettings__Secret}
+      JwtSettings__Issuer: ${JwtSettings__Issuer}
+      JwtSettings__Audience: ${JwtSettings__Audience}
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - user-network
+      - complyapi-network
+
+volumes:
+  mongo_user_data:
+
+networks:
+  user-network:
+  complyapi-network:
+    external: true
