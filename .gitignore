@@ -8,3 +8,156 @@
 /src/api/ProductService/tests/ProductsService.Integration.Tests/appsettings.Test.json
 .env
 .idea
+
+# IGNORING FILES AND FOLDERS
+
+.idea
+*.user
+.vs
+bin
+obj
+.env
+
+# Configs locais
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
+# Env's
+.env
+.env.development
+.env.production
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Arquivo .gitignore padr�o e robusto para .NET, C#, Visual Studio, VS Code e xUnit.
+# Gerado com base nas recomenda��es oficiais da Microsoft e do GitHub.
+
+# # # # # # # # # # # #
+# C# / .NET Core      #
+# # # # # # # # # # # #
+
+# Pastas de output da compila��o
+bin/
+obj/
+
+# Arquivos de log
+*.log
+logs/
+
+# Arquivos gerados pelo Tye
+.tye/
+
+# Artefatos do BenchmarkDotNet
+BenchmarkDotNet.Artifacts/
+
+# Vari�veis de ambiente
+.env
+
+# # # # # # # # # # # #
+# Visual Studio       #
+# # # # # # # # # # # #
+
+# Pasta de cache e configura��es do Visual Studio (essencial ignorar)
+.vs/
+
+# Arquivos espec�ficos do usu�rio (configura��es locais, etc.)
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Arquivos de build e cache
+*.VC.db
+*.VC.VC.opendb
+*.opensdf
+*.sdf
+ipch/
+
+# Arquivos de resultados de teste
+TestResult/
+*.visualstate.xml
+TestResult.xml
+
+# Arquivos de cobertura de c�digo
+*.coverage
+*.coveragexml
+
+# Arquivos de backup do Visual Studio
+_UpgradeReport_Files/
+Backup*/
+UpgradeLog*.XML
+UpgradeLog*.htm
+
+# # # # # # # # # # # # #
+# Visual Studio Code  #
+# # # # # # # # # # # # #
+
+# Ignora a pasta .vscode exceto arquivos que devem ser compartilhados com a equipe
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Hist�rico local de arquivos do VS Code
+.history/
+
+# # # # # # # # # # # #
+# Testes (xUnit, etc) #
+# # # # # # # # # # # #
+
+# Relat�rios e logs de frameworks de teste e cobertura
+*.trx
+coverlet.json
+coverage.cobertura.xml
+
+# # # # # # # # # # # #
+# Pacotes NuGet       #
+# # # # # # # # # # # #
+
+# Ignora a pasta de pacotes pois ela � restaurada pelo NuGet
+**/[Pp]ackages/*
+# Mas n�o ignora os alvos de build dentro dela
+!**/[Pp]ackages/build/
+
+# Arquivos gerados pelo NuGet v3
+*.nuget.props
+*.nuget.targets
+
+# # # # # # # # # # # #
+# Arquivos do S.O.    #
+# # # # # # # # # # # #
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs
