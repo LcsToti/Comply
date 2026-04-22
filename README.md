@@ -58,8 +58,6 @@ Visualização rápida dos endpoints de um dos microsserviços.
 
 ---
 
-## Testes e Infraestrutura
-
 ### Testes de Integração
 
 Validação de integrações com serviços externos Amazon S3 e Google Gemma AI.
@@ -76,9 +74,11 @@ Execução dos microsserviços utilizando Docker Compose.
 
 </details>
 
+## Apresentação
+
 🎬 [Vídeo de apresentação do projeto no Youtube - 10min](https://youtu.be/D-0VdaZQiJI)
 
-## 👥 Autores
+## Autores
 
 - **Lucas Toti (Eu)**
 - Matheus Zeíta
@@ -86,7 +86,7 @@ Execução dos microsserviços utilizando Docker Compose.
 - Pedro Bezerra
 - Luan Bezerra
 
-## 👤 Minha contribuição
+## Minha contribuição
 
 - Arquitetura de microsserviços com princípios de DDD, CQRS e EDA  
 - Implementação dos serviços de leilão (Listings & Auctions) com regras de negócio do sistema  
@@ -126,7 +126,7 @@ Execução dos microsserviços utilizando Docker Compose.
 
 </details>
 
-## ⚙️ Tecnologias
+## Tecnologias
 
 ### Backend
 
@@ -151,7 +151,7 @@ Execução dos microsserviços utilizando Docker Compose.
 ![Google Gemini](https://img.shields.io/badge/google%20gemini-8E75B2?style=for-the-badge&logo=google%20gemini&logoColor=white)
 ![Stripe](https://img.shields.io/badge/Stripe-5469d4?style=for-the-badge&logo=stripe&logoColor=ffffff)
 
-## 🏗️ Arquitetura
+## Arquitetura
 
 O sistema foi projetado utilizando **arquitetura de microsserviços**, com separação por domínios de negócio (Listings, Auctions, Payments, Users, etc).
 
@@ -163,7 +163,7 @@ O frontend consome os serviços através de uma API Gateway em Nginx, responsáv
 
 ![Diagrama do sistema](./imgs/architecture-diagram.png)
 
-## 📌 Decisões técnicas e desafios
+## Decisões técnicas e desafios
 
 - Uso de uma arquitetura distribuída em microsserviços, mesmo com o aumento enorme de complexidade.
 - Para obter maior testabilidade e desacoplamento de sistema, foi utilizado Clean Architecture, que permite maior testabilidade e isolamento do domínio
