@@ -246,7 +246,7 @@ export default function Search() {
                 <NoItemsFound
                   Icon={PackageX}
                   description="Infelizmente ainda não temos produtos para essa busca."
-                  title="Nenhum produto foi encontrado.."
+                  title="Nenhum produto foi encontrado"
                 />
               ) : (
                 <div className={productListClassName}>
