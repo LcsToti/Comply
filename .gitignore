@@ -14,6 +14,7 @@
 .idea
 *.user
 .vs
+.vscode
 bin
 obj
 .env
@@ -76,6 +77,10 @@ BenchmarkDotNet.Artifacts/
 
 # Vari�veis de ambiente
 .env
+.env.development
+.env.dev
+.env.production
+.env.prod
 
 # # # # # # # # # # # #
 # Visual Studio       #

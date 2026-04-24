@@ -1,0 +1,200 @@
+services:
+  # Infra
+
+  ## API Gateway
+  nginx:
+    image: nginx:stable-alpine
+    container_name: comply-gateway
+    restart: unless-stopped
+    ports:
+      - "9191:8080"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - comply-network
+
+  ## RabbitMQ
+  rabbitmq:
+    image: heidiks/rabbitmq-delayed-message-exchange:4.2.0-management
+    container_name: comply-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RabbitMqSettings__User}
+      RABBITMQ_DEFAULT_PASS: ${RabbitMqSettings__Password}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/
+    networks:
+      - comply-network
+
+  ## MongoDB
+  mongo:
+    image: mongo:7
+    container_name: comply-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PASSWORD}
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - comply-network
+
+  # Microsservices
+
+  ## Listing
+  listing-service:
+    build:
+      context: .
+      dockerfile: ListingService/src/ListingService.Api/dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      MONGODB_CONNECTION_STRING: ${MONGODB_CONNECTION_STRING}
+      RABBITMQ_CONNECTION_STRING: ${RABBITMQ_CONNECTION_STRING}
+      JwtSettings__Secret: ${JwtSettings__Secret}
+      JwtSettings__Issuer: ${JwtSettings__Issuer}
+      JwtSettings__Audience: ${JwtSettings__Audience}
+      PRODUCT_SERVICE_URL: ${PRODUCT_SERVICE_URL}
+    ports:
+      - "9090:8080"
+    depends_on:
+      mongo:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+    networks:
+      - comply-network
+
+  ## Notification
+  notification-service:
+    container_name: notification-service
+    build:
+      context: .
+      dockerfile: NotificationService/src/NotificationService.Api/dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      MONGODB_CONNECTION_STRING: ${MONGODB_CONNECTION_STRING}
+      RABBITMQ_CONNECTION_STRING: ${RABBITMQ_CONNECTION_STRING}
+      JwtSettings__Secret: ${JwtSettings__Secret}
+      JwtSettings__Issuer: ${JwtSettings__Issuer}
+      JwtSettings__Audience: ${JwtSettings__Audience}
+    ports:
+      - "9091:8080"
+    depends_on:
+      mongo:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+    networks:
+      - comply-network
+
+  ## Payment
+  payment-service:
+    container_name: payment-service
+    build:
+      context: .
+      dockerfile: PaymentService/src/PaymentService.Api/dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      MONGODB_CONNECTION_STRING: ${MONGODB_CONNECTION_STRING}
+      RABBITMQ_CONNECTION_STRING: ${RABBITMQ_CONNECTION_STRING}
+      JwtSettings__Secret: ${JwtSettings__Secret}
+      JwtSettings__Issuer: ${JwtSettings__Issuer}
+      JwtSettings__Audience: ${JwtSettings__Audience}
+      StripeConfiguration__ApiKey: ${StripeConfiguration__ApiKey}
+      StripeConfiguration__RefreshUrl: ${StripeConfiguration__RefreshUrl}
+      StripeConfiguration__ReturnUrl: ${StripeConfiguration__ReturnUrl}
+    ports:
+      - "9092:8080"
+    depends_on:
+      mongo:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+    networks:
+      - comply-network
+
+  ## Product
+  product-service:
+    container_name: product-service
+    build:
+      context: .
+      dockerfile: ProductService/src/ProductService.API/dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      MONGODB_CONNECTION_STRING: ${MONGODB_CONNECTION_STRING}
+      RABBITMQ_CONNECTION_STRING: ${RABBITMQ_CONNECTION_STRING}
+      JwtSettings__Secret: ${JwtSettings__Secret}
+      JwtSettings__Issuer: ${JwtSettings__Issuer}
+      JwtSettings__Audience: ${JwtSettings__Audience}
+      Gemini__Key: ${Gemini__Key}
+      AWS__BucketName: ${AWS__BucketName}
+      AWS__Region: ${AWS__Region}
+      AWS__AccessKey: ${AWS__AccessKey}
+      AWS__SecretKey: ${AWS__SecretKey}
+    ports:
+      - "9093:8080"
+    depends_on:
+      mongo:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+    networks:
+      - comply-network
+
+  ## Sale
+  sale-service:
+    container_name: sale-service
+    build:
+      context: .
+      dockerfile: SaleService/src/SaleService.Api/dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      MONGODB_CONNECTION_STRING: ${MONGODB_CONNECTION_STRING}
+      RABBITMQ_CONNECTION_STRING: ${RABBITMQ_CONNECTION_STRING}
+      JwtSettings__Secret: ${JwtSettings__Secret}
+      JwtSettings__Issuer: ${JwtSettings__Issuer}
+      JwtSettings__Audience: ${JwtSettings__Audience}
+    ports:
+      - "9094:8080"
+    depends_on:
+      mongo:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+    networks:
+      - comply-network
+
+  ## User
+  user-service:
+    container_name: user-service
+    build:
+      context: .
+      dockerfile: UserService/src/UserService.api/dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      MONGODB_CONNECTION_STRING: ${MONGODB_CONNECTION_STRING}
+      RABBITMQ_CONNECTION_STRING: ${RABBITMQ_CONNECTION_STRING}
+      JwtSettings__Secret: ${JwtSettings__Secret}
+      JwtSettings__Issuer: ${JwtSettings__Issuer}
+      JwtSettings__Audience: ${JwtSettings__Audience}
+    ports:
+      - "9095:8080"
+    depends_on:
+      mongo:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+    networks:
+      - comply-network
+
+volumes:
+  rabbitmq_data:
+  mongo_data:
+
+networks:
+  comply-network:
